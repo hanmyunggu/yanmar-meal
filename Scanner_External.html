@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>YANMAR · 식수관리</title>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#f4f6f8;color:#202124;font-family:Arial,"Noto Sans KR",sans-serif}
+body{min-height:100dvh}
+.wrap{width:100%;max-width:720px;margin:0 auto;padding:16px}
+.main-card{background:#fff;border:1px solid #e1e4e8;border-radius:26px;padding:18px;box-shadow:0 8px 28px rgba(0,0,0,.07)}
+.header{text-align:center;padding:2px 0 17px}
+.logo{width:245px;max-width:70%;height:auto;display:block;margin:0 auto 10px}
+.title{font-size:22px;font-weight:800}
+.jp-title{font-size:15px;margin-top:4px;color:#555}
+#reader{width:100%;background:#111;border-radius:20px;overflow:hidden;min-height:420px}
+#reader video{width:100%!important;height:auto!important;display:block!important;object-fit:cover!important}
+#reader__scan_region{width:100%!important}
+#reader__dashboard_section,#reader__dashboard_section_csr,#reader__status_span{display:none!important}
+.err{display:none;text-align:center;padding:18px;color:#666;line-height:1.6}
+.retry{display:none;width:100%;padding:13px;border:0;border-radius:12px;background:#222;color:#fff;font-weight:700;font-size:15px}
+.hint{text-align:center;color:#555;font-size:14px;margin:13px 0 2px}
+.status{text-align:center;font-size:12px;color:#777;margin-top:8px;min-height:18px}
+.result{display:none;margin-top:14px;padding:22px 12px;border-radius:18px;text-align:center}
+.result.success{display:block;background:#eaf8ef;border:1px solid #30a75a}
+.result.duplicate{display:block;background:#fff1f1;border:1px solid #e55353}
+.result.invalid{display:block;background:#fff8e8;border:1px solid #e2a900}
+.icon{font-size:48px;font-weight:900}
+.name{font-size:31px;font-weight:900;margin:8px 0 3px}
+.message{font-size:17px;font-weight:700;line-height:1.5;white-space:pre-line}
+.clock{margin-top:9px;font-size:14px;color:#555}
+.admin{display:block;text-align:center;margin-top:16px;color:#666;text-decoration:none;font-size:13px}
+@media(max-width:600px){
+  .wrap{width:100vw;max-width:none;margin:0;padding:0}
+  .main-card{width:100vw;min-height:100dvh;margin:0;padding:10px;border:0;border-radius:0;box-shadow:none}
+  .header{padding:10px 0 12px}
+  .logo{width:210px;max-width:62%}
+  .title{font-size:21px}
+  #reader{width:100vw!important;margin-left:-10px!important;border-radius:0!important;min-height:0;height:calc(100dvh - 190px);max-height:none}
+  #reader video{width:100vw!important;height:100%!important;min-height:0!important;max-height:none!important;object-fit:cover!important;border-radius:0!important}
+  .hint{font-size:13px;margin-top:10px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="main-card">
+    <div class="header">
+      <img class="logo" src="data:image/png;base64,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" alt="YANMAR">
+      <div class="title">식수관리</div>
+      <div class="jp-title">食数管理</div>
+    </div>
+
+    <div id="reader"></div>
+    <div id="err" class="err">카메라를 시작할 수 없습니다.<br>브라우저의 카메라 권한을 허용해주세요.</div>
+    <button id="retry" class="retry" type="button">카메라 다시 시작</button>
+    <div class="hint">직원의 개인 QR코드를 카메라에 비춰주세요.</div>
+    <div id="status" class="status">카메라 준비 중...</div>
+
+    <div id="result" class="result">
+      <div id="icon" class="icon">✓</div>
+      <div id="resultName" class="name"></div>
+      <div id="resultMessage" class="message"></div>
+      <div id="resultTime" class="clock"></div>
+    </div>
+
+    <a id="adminLink" class="admin" href="#">⚙ 관리자</a>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 반드시 본인의 Apps Script 웹앱 배포 URL로 교체하세요.
+// 예: https://script.google.com/macros/s/XXXXXXXX/exec
+// ============================================================
+const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzjUtyAXlZnRSsws8lji4r19UyHWHMrr86zE3x1Dyfvo38dJxOIx2Xa_CCrMZP_Htc/exec';
+
+let scanner = null;
+let scanning = false;
+let busy = false;
+let resetTimer = null;
+
+const $ = id => document.getElementById(id);
+
+function setStatus(text) { $('status').textContent = text; }
+
+function showResult(d) {
+  const box = $('result');
+  box.className = 'result ' + (d.type || 'invalid');
+  $('icon').textContent = d.type === 'success' ? '✓' : d.type === 'duplicate' ? '!' : '×';
+  $('resultName').textContent = d.name || '확인 필요';
+  $('resultMessage').textContent = d.message || '';
+  $('resultTime').textContent = d.time ? '등록시간: ' + d.time : '';
+
+  clearTimeout(resetTimer);
+  resetTimer = setTimeout(() => {
+    box.className = 'result';
+    busy = false;
+  }, 2300);
+}
+
+function apiRegister(qrText) {
+  const callbackName = '__mealCallback_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+  const script = document.createElement('script');
+  let finished = false;
+
+  window[callbackName] = function(data) {
+    finished = true;
+    cleanup();
+    showResult(data || {type:'invalid', message:'서버 응답이 없습니다.'});
+  };
+
+  function cleanup() {
+    delete window[callbackName];
+    script.remove();
+  }
+
+  script.onerror = function() {
+    cleanup();
+    if (!finished) showResult({type:'invalid', message:'서버 연결에 실패했습니다.'});
+  };
+
+  const url = GAS_WEB_APP_URL
+    + '?mode=api&action=register'
+    + '&qr=' + encodeURIComponent(qrText)
+    + '&callback=' + encodeURIComponent(callbackName)
+    + '&t=' + Date.now();
+
+  script.src = url;
+  document.body.appendChild(script);
+}
+
+function onScanSuccess(decodedText) {
+  if (busy) return;
+  busy = true;
+  setStatus('QR 확인 중...');
+  apiRegister(decodedText);
+}
+
+async function stopScanner() {
+  if (!scanner) return;
+  try {
+    if (scanning) await scanner.stop();
+  } catch (e) {}
+  try {
+    scanner.clear();
+  } catch (e) {}
+  scanner = null;
+  scanning = false;
+}
+
+async function startScanner() {
+  if (scanning) return;
+
+  $('err').style.display = 'none';
+  $('retry').style.display = 'none';
+  setStatus('카메라 준비 중...');
+
+  if (!window.isSecureContext) {
+    $('err').innerHTML = '보안 연결(HTTPS)에서만 카메라를 사용할 수 있습니다.';
+    $('err').style.display = 'block';
+    $('retry').style.display = 'block';
+    setStatus('HTTPS 필요');
+    return;
+  }
+
+  try {
+    if (!scanner) scanner = new Html5Qrcode('reader');
+
+    const config = {
+      fps: 10,
+      qrbox: (w, h) => {
+        const size = Math.floor(Math.min(w, h) * 0.62);
+        return { width: size, height: size };
+      },
+      aspectRatio: 1,
+      disableFlip: false
+    };
+
+    // 모바일은 후면 카메라 우선, PC는 일반 video 장치로 자동 선택
+    let constraints;
+    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      constraints = { facingMode: { ideal: 'environment' } };
+    } else {
+      constraints = { video: true };
+    }
+
+    await scanner.start(constraints, config, onScanSuccess, () => {});
+    scanning = true;
+    setStatus('● 스캔 대기 중');
+  } catch (e) {
+    console.error('카메라 시작 오류:', e);
+    await stopScanner();
+    $('err').textContent = '카메라를 시작할 수 없습니다. 브라우저의 카메라 권한을 확인해주세요.';
+    $('err').style.display = 'block';
+    $('retry').style.display = 'block';
+    setStatus('카메라 오류');
+  }
+}
+
+$('retry').addEventListener('click', async () => {
+  await stopScanner();
+  setTimeout(startScanner, 150);
+});
+
+(function init() {
+  if (GAS_WEB_APP_URL === 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    $('err').textContent = 'Apps Script 웹앱 주소를 HTML에 입력해주세요.';
+    $('err').style.display = 'block';
+    setStatus('웹앱 주소 설정 필요');
+  } else {
+    $('adminLink').href = GAS_WEB_APP_URL + '?mode=admin';
+    setTimeout(startScanner, 300);
+  }
+})();
+</script>
+</body>
+</html>
